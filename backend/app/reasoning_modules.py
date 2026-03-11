@@ -1,0 +1,47 @@
+REASONING_MODULES: list[str] = [
+    "How could I devise an experiment to help solve that problem?",
+    "Make a list of ideas for solving this problem, and apply them one by one to the problem to see if any progress can be made.",
+    "How could I measure progress on this problem?",
+    "How can I simplify the problem so that it is easier to solve?",
+    "What are the key assumptions underlying this problem?",
+    "What are the potential risks and drawbacks of each solution?",
+    "What are the alternative perspectives or viewpoints on this problem?",
+    "What are the long-term implications of this solution?",
+    "How can I break down this problem into smaller, more manageable parts?",
+    "Critical Thinking: This style involves analyzing the problem from different perspectives, questioning assumptions, and evaluating the evidence or information available.",
+    "Try creative thinking, generate innovative and out-of-the-box ideas to solve the problem. Explore unconventional solutions, think laterally, and challenge traditional approaches.",
+    "Seek input and collaboration from others to solve the problem. Emphasize teamwork, open communication, and leveraging the strengths of diverse individuals.",
+    "Use systems thinking: Consider the problem as part of a larger system and understanding the interconnectedness of various elements. Focuses on identifying the underlying causes, feedback loops, and interdependencies that influence the problem.",
+    "Use Risk Analysis: Evaluate potential risks, uncertainties, and tradeoffs associated with different solutions or approaches to a problem.",
+    "Use Reflective Thinking: Step back from the problem, take the time for introspection and self-reflection. Examine personal biases, assumptions, and mental models that may influence problem-solving.",
+    "What is the core issue or problem that needs to be addressed?",
+    "What are the underlying causes or factors contributing to the problem?",
+    "Are there any potential solutions or strategies that have been tried before? If yes, what were the outcomes and lessons learned?",
+    "What are the potential obstacles or challenges that might arise in solving this problem?",
+    "Are there any relevant data or information that can provide insights into the problem?",
+    "Are there any stakeholders or parties that are affected by the problem?",
+    "What resources (time, money, expertise) are available to tackle the problem?",
+    "How can progress or success in solving the problem be measured or evaluated?",
+    "What indicators or metrics can be used?",
+    "Is the problem a symptom of a larger issue, or is it a standalone problem?",
+    "Does the problem involve a physical constraint?",
+    "Does the problem involve making decisions or choices?",
+    "Does the problem involve a sequence of steps or procedures?",
+    "Does the problem involve quantitative reasoning or data analysis?",
+    "Does the problem involve abstract thinking or conceptual understanding?",
+    "Does the problem involve time constraints or deadlines?",
+    "Let's think step by step.",
+    "Let's make a step by step plan and implement it with good notation and target.",
+    "Let me take a deep breath and think about this carefully.",
+    "I need to search for relevant information using search engines, databases, or other sources.",
+    "I need to find any relevant formulas, equations, or mathematical models that can help solve the problem.",
+    "I need to find any relevant examples, case studies, or precedents that can guide my thinking.",
+    "I need to consider the ethical implications and potential consequences of the solutions.",
+    "I need to determine the domain of the problem, including any specific knowledge or expertise required.",
+]
+
+
+def get_modules_text() -> str:
+    """Return all 39 reasoning modules as a numbered list string."""
+    lines = [f"{i + 1}. {module}" for i, module in enumerate(REASONING_MODULES)]
+    return "\n".join(lines)

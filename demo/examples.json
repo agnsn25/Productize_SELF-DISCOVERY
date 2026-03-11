@@ -1,0 +1,38 @@
+[
+  {
+    "id": "math",
+    "name": "Math Word Problems",
+    "task_description": "Solve multi-step math word problems involving rates, percentages, and unit conversions",
+    "sample_problems": [
+      "A store offers a 20% discount on a $150 jacket. Then applies an additional 15% member discount on the reduced price. Sales tax is 8.5%. What is the final price?",
+      "A train travels at 60 mph for the first 2 hours, then 80 mph for the next 1.5 hours, and finally 45 mph for 40 minutes. What is the total distance covered and the average speed for the entire journey?"
+    ]
+  },
+  {
+    "id": "logic",
+    "name": "Logical Deduction",
+    "task_description": "Solve logical deduction puzzles that require tracking multiple constraints and relationships",
+    "sample_problems": [
+      "There are 5 houses in a row, each painted a different color: red, blue, green, yellow, white. Each owner has a different pet: dog, cat, bird, fish, hamster. The red house owner has a dog. The blue house is to the left of the green house. The cat owner lives next to the bird owner. The yellow house is on the far right. The fish owner lives in the center house. Who owns the hamster?",
+      "Four friends (Alice, Bob, Carol, Dave) each ordered a different drink (coffee, tea, juice, water) and a different dessert (cake, pie, ice cream, brownie). Alice didn't order coffee or cake. Bob ordered tea. Carol's dessert was ice cream. The person who ordered coffee also ordered pie. Dave didn't order juice. What did each person order?"
+    ]
+  },
+  {
+    "id": "code",
+    "name": "Code Debugging",
+    "task_description": "Debug Python code by identifying logical errors, off-by-one bugs, and incorrect algorithm implementations",
+    "sample_problems": [
+      "Find the bug in this Python code:\ndef find_second_largest(nums):\n    largest = nums[0]\n    second = nums[1]\n    for n in nums[2:]:\n        if n > largest:\n            second = largest\n            largest = n\n        elif n > second:\n            second = n\n    return second",
+      "Find the bug in this Python code:\ndef binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid\n        else:\n            right = mid\n    return -1"
+    ]
+  },
+  {
+    "id": "multihop",
+    "name": "Multi-hop QA",
+    "task_description": "Answer questions that require combining information from multiple facts and reasoning across them",
+    "sample_problems": [
+      "Marie Curie was born in Warsaw. Warsaw is the capital of Poland. Poland is in the European Union. The European Union was established by the Maastricht Treaty in 1993. How many years after the establishment of the EU was the country of Marie Curie's birth a member, given Poland joined in 2004?",
+      "The Eiffel Tower was designed by Gustave Eiffel's company. Gustave Eiffel was born in Dijon, France in 1832. The Eiffel Tower was completed in 1889 for the World's Fair. How old was the designer when his most famous structure was completed?"
+    ]
+  }
+]

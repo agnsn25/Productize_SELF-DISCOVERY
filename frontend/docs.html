@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation — Self-Discover API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;500;700&family=Roboto:wght@300;400;500&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="/static/docs.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-left">
+        <a href="/" class="brand">
+          <span class="brand-s">S</span>elf <span class="brand-dash">-</span> <span class="brand-d">D</span>iscover <span class="brand-api"><span class="brand-a">A</span>PI</span>
+        </a>
+        <span class="brand-subtitle">Documentation</span>
+      </div>
+      <div class="navbar-right">
+        <a href="/" class="nav-link">Overview</a>
+        <a href="/docs" class="nav-link active-link">Documentation</a>
+        <a href="#" class="nav-link">Pricing</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="docs-layout">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="docs-sidebar">
+      <nav class="docs-nav">
+        <div class="docs-nav-section">
+          <h4 class="docs-nav-heading">Getting Started</h4>
+          <a href="#overview" class="docs-nav-link active">Overview</a>
+          <a href="#quickstart" class="docs-nav-link">Quick Start</a>
+          <a href="#how-it-works" class="docs-nav-link">How It Works</a>
+        </div>
+        <div class="docs-nav-section">
+          <h4 class="docs-nav-heading">API Reference</h4>
+          <a href="#discover-endpoint" class="docs-nav-link">POST /api/discover</a>
+          <a href="#infer-endpoint" class="docs-nav-link">POST /api/infer</a>
+          <a href="#compare-endpoint" class="docs-nav-link">POST /api/infer/compare</a>
+          <a href="#list-structures" class="docs-nav-link">GET /api/structures</a>
+          <a href="#get-structure" class="docs-nav-link">GET /api/structures/:id</a>
+        </div>
+        <div class="docs-nav-section">
+          <h4 class="docs-nav-heading">Concepts</h4>
+          <a href="#reasoning-modules" class="docs-nav-link">Reasoning Modules</a>
+          <a href="#discovery-pipeline" class="docs-nav-link">Discovery Pipeline</a>
+          <a href="#compare-mode" class="docs-nav-link">Compare Mode</a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="docs-main">
+
+      <!-- OVERVIEW -->
+      <section id="overview" class="docs-section">
+        <h1 class="docs-title">Self-Discover API</h1>
+        <p class="docs-lead">A reasoning framework that discovers problem-specific cognitive strategies before solving. Based on <a href="https://arxiv.org/pdf/2402.03620" target="_blank" rel="noopener">Google DeepMind's SELF-DISCOVER paper</a>.</p>
+
+        <div class="docs-callout docs-callout-blue">
+          <div class="docs-callout-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </div>
+          <div>
+            <strong>Core idea:</strong> Instead of using one-size-fits-all prompting, the model first analyzes your problem type and builds a custom reasoning structure. That structure is then reused to solve any problem of the same type — faster and more accurately.
+          </div>
+        </div>
+
+        <div class="docs-feature-grid">
+          <div class="docs-feature-card">
+            <div class="docs-feature-icon" style="background: #e8f0fe; color: #4285f4;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2 6.3-6.4 2.1 2-6.3z"/></svg>
+            </div>
+            <h3>Auditable Reasoning</h3>
+            <p>Every answer comes with a full reasoning trace — you can see exactly how the model thought through the problem.</p>
+          </div>
+          <div class="docs-feature-card">
+            <div class="docs-feature-icon" style="background: #e6f4ea; color: #34a853;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <h3>Compute Efficient</h3>
+            <p>Discovery runs once per problem type. After that, inference is a single pass using the saved structure — up to 10-40x cheaper than ensemble methods.</p>
+          </div>
+          <div class="docs-feature-card">
+            <div class="docs-feature-icon" style="background: #fef7e0; color: #e37400;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"/></svg>
+            </div>
+            <h3>Better Accuracy</h3>
+            <p>Problem-specific reasoning outperforms generic Chain-of-Thought on complex tasks — up to 32% improvement on benchmarks.</p>
+          </div>
+        </div>
+      </section>
+
+      <hr class="docs-divider" />
+
+      <!-- QUICK START -->
+      <section id="quickstart" class="docs-section">
+        <h2>Quick Start</h2>
+        <p>Two steps to go from problem to answer.</p>
+
+        <div class="docs-steps">
+          <div class="docs-step">
+            <div class="docs-step-number">1</div>
+            <div class="docs-step-content">
+              <h3>Discover a reasoning structure</h3>
+              <p>Describe a <em>type</em> of problem (not a specific instance). The API analyzes it and builds a reusable reasoning structure.</p>
+              <div class="docs-code-block">
+                <div class="docs-code-header">
+                  <span class="docs-code-lang">bash</span>
+                  <button class="btn-copy docs-copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+<pre><code>curl -X POST http://localhost:8000/api/discover \
+  -H "Content-Type: application/json" \
+  -d '{
+    "task_description": "Solve multi-step math word problems involving rates, percentages, and unit conversions"
+  }'</code></pre>
+              </div>
+              <p>Save the <code>id</code> from the response — that's your structure ID.</p>
+            </div>
+          </div>
+
+          <div class="docs-step">
+            <div class="docs-step-number">2</div>
+            <div class="docs-step-content">
+              <h3>Solve problems using that structure</h3>
+              <p>Pass the structure ID and a specific problem. The model follows the discovered reasoning steps to solve it.</p>
+              <div class="docs-code-block">
+                <div class="docs-code-header">
+                  <span class="docs-code-lang">bash</span>
+                  <button class="btn-copy docs-copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+<pre><code>curl -X POST http://localhost:8000/api/infer \
+  -H "Content-Type: application/json" \
+  -d '{
+    "structure_id": "YOUR_STRUCTURE_ID",
+    "problem": "A store offers a 20% discount on a $150 jacket, then an additional 15% member discount. Sales tax is 8.5%. What is the final price?"
+  }'</code></pre>
+              </div>
+              <p>You can reuse the same structure ID for any number of problems of this type.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="docs-divider" />
+
+      <!-- HOW IT WORKS -->
+      <section id="how-it-works" class="docs-section">
+        <h2>How It Works</h2>
+        <p>SELF-DISCOVER has two stages, each with distinct roles.</p>
+
+        <div class="docs-pipeline">
+          <div class="docs-pipeline-stage">
+            <div class="docs-pipeline-badge badge-blue">Stage 1 — Discovery</div>
+            <p>This runs once per problem type. Three sequential LLM calls build a reasoning structure:</p>
+            <div class="docs-pipeline-steps">
+              <div class="docs-pipeline-step">
+                <span class="docs-pipeline-label">SELECT</span>
+                <span>From 39 reasoning modules, pick the ones most relevant to this problem type</span>
+              </div>
+              <div class="docs-pipeline-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+              </div>
+              <div class="docs-pipeline-step">
+                <span class="docs-pipeline-label">ADAPT</span>
+                <span>Rephrase each selected module to be specific and actionable for this problem type</span>
+              </div>
+              <div class="docs-pipeline-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+              </div>
+              <div class="docs-pipeline-step">
+                <span class="docs-pipeline-label">IMPLEMENT</span>
+                <span>Compose the adapted modules into a structured, step-by-step JSON reasoning plan</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="docs-pipeline-connector">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--g-blue)" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <span>Structure saved with a unique ID</span>
+          </div>
+
+          <div class="docs-pipeline-stage">
+            <div class="docs-pipeline-badge badge-green">Stage 2 — Inference</div>
+            <p>This runs per problem. One LLM call fills in the reasoning structure with the specific problem's details.</p>
+            <div class="docs-pipeline-steps">
+              <div class="docs-pipeline-step">
+                <span class="docs-pipeline-label">SOLVE</span>
+                <span>Follow the saved structure step-by-step, applying each reasoning instruction to the new problem</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="docs-divider" />
+
+      <!-- API REFERENCE -->
+      <section id="discover-endpoint" class="docs-section">
+        <h2>API Reference</h2>
+
+        <!-- POST /api/discover -->
+        <div class="docs-endpoint">
+          <div class="docs-endpoint-header">
+            <span class="docs-method docs-method-post">POST</span>
+            <code class="docs-path">/api/discover</code>
+          </div>
+          <p>Run the full discovery pipeline (SELECT → ADAPT → IMPLEMENT) for a task type. Returns a saved reasoning structure.</p>
+
+          <h4>Request Body</h4>
+          <table class="docs-table">
+            <thead>
+              <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>task_description</code></td>
+                <td>string</td>
+                <td><strong>Required.</strong> A description of the problem type (not a specific problem instance).</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Response</h4>
+          <div class="docs-code-block">
+            <div class="docs-code-header">
+              <span class="docs-code-lang">json</span>
+            </div>
+<pre><code>{
+  "id": "a1b2c3d4-...",
+  "task_description": "Solve multi-step math word problems...",
+  "selected_modules": [
+    "How can I break down this problem into smaller, more manageable parts?",
+    "Does the problem involve quantitative reasoning or data analysis?"
+  ],
+  "adapted_modules": [
+    "Break the word problem into individual calculation steps...",
+    "Identify all numerical values, rates, and percentages..."
+  ],
+  "reasoning_structure": {
+    "step_1": {
+      "instruction": "Extract all given values...",
+      "reasoning_module": "Break the word problem into..."
+    },
+    "step_2": {
+      "instruction": "Apply operations in sequence...",
+      "reasoning_module": "Identify all numerical values..."
+    }
+  },
+  "thinking_traces": {
+    "select": "...",
+    "adapt": "...",
+    "implement": "..."
+  },
+  "created_at": "2026-03-11T14:30:00Z"
+}</code></pre>
+          </div>
+
+          <div class="docs-callout docs-callout-green">
+            <div class="docs-callout-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <div>
+              <strong>Tip:</strong> Write task descriptions as categories, not specific questions. "Solve logic puzzles with constraint tracking" is better than "Who owns the hamster?".
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- POST /api/infer -->
+      <section id="infer-endpoint" class="docs-section">
+        <div class="docs-endpoint">
+          <div class="docs-endpoint-header">
+            <span class="docs-method docs-method-post">POST</span>
+            <code class="docs-path">/api/infer</code>
+          </div>
+          <p>Solve a specific problem using a previously discovered reasoning structure.</p>
+
+          <h4>Request Body</h4>
+          <table class="docs-table">
+            <thead>
+              <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>structure_id</code></td>
+                <td>string</td>
+                <td><strong>Required.</strong> The ID returned from a previous <code>/api/discover</code> call.</td>
+              </tr>
+              <tr>
+                <td><code>problem</code></td>
+                <td>string</td>
+                <td><strong>Required.</strong> The specific problem to solve.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Response</h4>
+          <div class="docs-code-block">
+            <div class="docs-code-header">
+              <span class="docs-code-lang">json</span>
+            </div>
+<pre><code>{
+  "structure_id": "a1b2c3d4-...",
+  "problem": "A store offers a 20% discount on a $150 jacket...",
+  "reasoning_trace": "Step 1: Extract values — price: $150, discount: 20%...\nStep 2: Apply discount — $150 × 0.80 = $120...",
+  "answer": "The final price is $110.16",
+  "thinking_trace": "..."
+}</code></pre>
+          </div>
+
+          <h4>Errors</h4>
+          <table class="docs-table">
+            <thead>
+              <tr><th>Status</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>404</code></td><td>Structure ID not found</td></tr>
+              <tr><td><code>500</code></td><td>LLM or server error</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- POST /api/infer/compare -->
+      <section id="compare-endpoint" class="docs-section">
+        <div class="docs-endpoint">
+          <div class="docs-endpoint-header">
+            <span class="docs-method docs-method-post">POST</span>
+            <code class="docs-path">/api/infer/compare</code>
+          </div>
+          <p>Run both naive (direct prompt) and SELF-DISCOVER approaches on the same problem, side by side. Both run in parallel for speed.</p>
+
+          <h4>Request Body</h4>
+          <table class="docs-table">
+            <thead>
+              <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>structure_id</code></td>
+                <td>string</td>
+                <td><strong>Required.</strong> The reasoning structure to use for the SELF-DISCOVER side.</td>
+              </tr>
+              <tr>
+                <td><code>problem</code></td>
+                <td>string</td>
+                <td><strong>Required.</strong> The problem both approaches will solve.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Response</h4>
+          <div class="docs-code-block">
+            <div class="docs-code-header">
+              <span class="docs-code-lang">json</span>
+            </div>
+<pre><code>{
+  "structure_id": "a1b2c3d4-...",
+  "problem": "...",
+  "naive": {
+    "reasoning": "Step-by-step reasoning without any structure...",
+    "answer": "The final price is $109.65"
+  },
+  "self_discover": {
+    "reasoning_trace": "Step 1: Extract values...\nStep 2: ...",
+    "answer": "The final price is $110.16"
+  },
+  "thinking_traces": {
+    "naive": null,
+    "self_discover": "..."
+  }
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- GET /api/structures -->
+      <section id="list-structures" class="docs-section">
+        <div class="docs-endpoint">
+          <div class="docs-endpoint-header">
+            <span class="docs-method docs-method-get">GET</span>
+            <code class="docs-path">/api/structures</code>
+          </div>
+          <p>List all saved reasoning structures (summary view).</p>
+
+          <h4>Response</h4>
+          <div class="docs-code-block">
+            <div class="docs-code-header">
+              <span class="docs-code-lang">json</span>
+            </div>
+<pre><code>[
+  {
+    "id": "a1b2c3d4-...",
+    "task_description": "Solve multi-step math word problems...",
+    "created_at": "2026-03-11T14:30:00Z"
+  },
+  {
+    "id": "e5f6g7h8-...",
+    "task_description": "Debug Python code by identifying logical errors...",
+    "created_at": "2026-03-11T15:45:00Z"
+  }
+]</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- GET /api/structures/:id -->
+      <section id="get-structure" class="docs-section">
+        <div class="docs-endpoint">
+          <div class="docs-endpoint-header">
+            <span class="docs-method docs-method-get">GET</span>
+            <code class="docs-path">/api/structures/{structure_id}</code>
+          </div>
+          <p>Get full details of a specific reasoning structure, including its modules and JSON plan.</p>
+
+          <h4>Response</h4>
+          <p>Same shape as the <code>/api/discover</code> response.</p>
+
+          <h4>Errors</h4>
+          <table class="docs-table">
+            <thead>
+              <tr><th>Status</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>404</code></td><td>Structure ID not found</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr class="docs-divider" />
+
+      <!-- REASONING MODULES -->
+      <section id="reasoning-modules" class="docs-section">
+        <h2>Reasoning Modules</h2>
+        <p>The framework draws from a library of 39 cognitive reasoning modules — derived from the original SELF-DISCOVER paper. During the SELECT step, the model picks the most relevant ones for your problem type.</p>
+
+        <p>These modules fall into a few broad categories:</p>
+
+        <div class="docs-module-categories">
+          <div class="docs-module-cat">
+            <h4>Problem Decomposition</h4>
+            <ul>
+              <li>How can I break down this problem into smaller, more manageable parts?</li>
+              <li>How can I simplify the problem so that it is easier to solve?</li>
+              <li>What is the core issue or problem that needs to be addressed?</li>
+              <li>Let's make a step by step plan and implement it with good notation and target.</li>
+            </ul>
+          </div>
+
+          <div class="docs-module-cat">
+            <h4>Thinking Styles</h4>
+            <ul>
+              <li>Critical Thinking: Analyze from different perspectives, question assumptions, evaluate evidence.</li>
+              <li>Try creative thinking, generate innovative and out-of-the-box ideas.</li>
+              <li>Use systems thinking: Consider the problem as part of a larger system.</li>
+              <li>Use Reflective Thinking: Step back, examine biases and mental models.</li>
+            </ul>
+          </div>
+
+          <div class="docs-module-cat">
+            <h4>Problem Classification</h4>
+            <ul>
+              <li>Does the problem involve making decisions or choices?</li>
+              <li>Does the problem involve a sequence of steps or procedures?</li>
+              <li>Does the problem involve quantitative reasoning or data analysis?</li>
+              <li>Does the problem involve abstract thinking or conceptual understanding?</li>
+            </ul>
+          </div>
+
+          <div class="docs-module-cat">
+            <h4>Analysis & Evaluation</h4>
+            <ul>
+              <li>What are the key assumptions underlying this problem?</li>
+              <li>What are the potential risks and drawbacks of each solution?</li>
+              <li>Use Risk Analysis: Evaluate potential risks, uncertainties, and tradeoffs.</li>
+              <li>How could I measure progress on this problem?</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="docs-callout docs-callout-muted">
+          <div class="docs-callout-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+          </div>
+          <div>
+            The full list contains 39 modules. You don't pick them — the model does during the SELECT step. But knowing they exist helps you write better task descriptions.
+          </div>
+        </div>
+      </section>
+
+      <!-- DISCOVERY PIPELINE -->
+      <section id="discovery-pipeline" class="docs-section">
+        <h2>Discovery Pipeline</h2>
+        <p>Here's what happens under the hood when you call <code>/api/discover</code>:</p>
+
+        <div class="docs-detail-list">
+          <div class="docs-detail-item">
+            <div class="docs-detail-num" style="background: #e8f0fe; color: #4285f4;">1</div>
+            <div>
+              <h4>SELECT</h4>
+              <p>The LLM receives your task description and the full list of 39 reasoning modules. It picks the subset that's genuinely useful — typically 4-8 modules. The prompt explicitly says "do not select all of them" to avoid noise.</p>
+            </div>
+          </div>
+          <div class="docs-detail-item">
+            <div class="docs-detail-num" style="background: #fef7e0; color: #e37400;">2</div>
+            <div>
+              <h4>ADAPT</h4>
+              <p>Each selected module gets rephrased to be specific to your task. For example, "Break the problem into smaller parts" might become "Break the word problem into individual calculation steps, isolating each rate or percentage operation."</p>
+            </div>
+          </div>
+          <div class="docs-detail-item">
+            <div class="docs-detail-num" style="background: #e6f4ea; color: #34a853;">3</div>
+            <div>
+              <h4>IMPLEMENT</h4>
+              <p>The adapted modules are composed into a structured JSON plan with ordered steps. Each step has an <code>instruction</code> and the <code>reasoning_module</code> it's based on. The final step always synthesizes into a conclusion.</p>
+            </div>
+          </div>
+        </div>
+
+        <p>All three steps use Gemini 2.5 Pro with extended thinking enabled. The thinking traces from each step are saved alongside the structure for full auditability.</p>
+      </section>
+
+      <!-- COMPARE MODE -->
+      <section id="compare-mode" class="docs-section">
+        <h2>Compare Mode</h2>
+        <p>The <code>/api/infer/compare</code> endpoint runs two approaches in parallel on the same problem:</p>
+
+        <div class="docs-compare-explanation">
+          <div class="docs-compare-col">
+            <div class="docs-compare-badge" style="background: #fef7e0; color: #e37400; border-color: rgba(251,188,4,0.3);">Naive</div>
+            <p>A straightforward "solve this step by step" prompt. No structure, no module selection. This is how most LLM apps work today.</p>
+          </div>
+          <div class="docs-compare-vs">vs</div>
+          <div class="docs-compare-col">
+            <div class="docs-compare-badge" style="background: #e6f4ea; color: #137333; border-color: rgba(52,168,83,0.3);">SELF-DISCOVER</div>
+            <p>Uses the pre-built reasoning structure to guide the model through problem-specific steps. The model fills in each step with its reasoning.</p>
+          </div>
+        </div>
+
+        <p>Both run concurrently via <code>asyncio.gather</code>, so you're not waiting twice. Compare mode is useful for:</p>
+        <ul class="docs-bullet-list">
+          <li>Validating that a discovered structure actually improves answers for your problem type</li>
+          <li>Demos and presentations showing the value of structured reasoning</li>
+          <li>Iterating on task descriptions — if SELF-DISCOVER isn't beating naive, your task description might be too vague</li>
+        </ul>
+      </section>
+
+      <div class="docs-footer">
+        <p>Built on <a href="https://arxiv.org/pdf/2402.03620" target="_blank" rel="noopener">SELF-DISCOVER: Large Language Models Self-Compose Reasoning Structures</a> (Zhou et al., 2024)</p>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    // Sidebar active link tracking
+    const sections = document.querySelectorAll('.docs-section');
+    const navLinks = document.querySelectorAll('.docs-nav-link');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector(`.docs-nav-link[href="#${entry.target.id}"]`);
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+
+    sections.forEach(section => observer.observe(section));
+
+    // Copy code blocks
+    function copyCode(btn) {
+      const code = btn.closest('.docs-code-block').querySelector('code');
+      navigator.clipboard.writeText(code.textContent).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>

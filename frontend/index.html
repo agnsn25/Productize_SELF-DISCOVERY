@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Self-Discover API — Developer Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;500;700&family=Roboto:wght@300;400;500&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-left">
+        <a href="/" class="brand">
+          <span class="brand-s">S</span>elf <span class="brand-dash">-</span> <span class="brand-d">D</span>iscover <span class="brand-api"><span class="brand-a">A</span>PI</span>
+        </a>
+        <span class="brand-subtitle">Developer Playground</span>
+      </div>
+      <div class="navbar-right">
+        <a href="/" class="nav-link active-link">Overview</a>
+        <a href="/docs" class="nav-link">Documentation</a>
+        <a href="#" class="nav-link">Pricing</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-illustration">
+      <div class="hero-shapes">
+        <div class="shape shape-cube"></div>
+        <div class="shape shape-sphere sphere-blue"></div>
+        <div class="shape shape-sphere sphere-red"></div>
+        <div class="shape shape-sphere sphere-yellow"></div>
+        <div class="shape shape-block block-green"></div>
+        <div class="shape shape-block block-red"></div>
+        <div class="shape shape-diamond"></div>
+      </div>
+    </div>
+    <h1 class="hero-title">Discover the <span class="highlight">Reasoning</span> behind the answer.</h1>
+    <p class="hero-subtitle">A self-discovering API that selects the right cognitive modules to solve your specific problem.</p>
+  </section>
+
+  <!-- ===== SEARCH BAR (Discover input) ===== -->
+  <div class="search-area">
+    <div class="search-bar">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9aa0a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="discover-task" class="search-input" placeholder="Describe a complex problem (e.g., 'Calculate the trajectory...' or 'Write a haiku about...')">
+    </div>
+    <div class="quick-fills">
+      <button class="pill" data-fill="discover-task" data-value="Solve multi-step math word problems involving rates, percentages, and unit conversions">Try Math</button>
+      <button class="pill" data-fill="discover-task" data-value="Debug Python code by identifying logical errors, off-by-one bugs, and incorrect algorithm implementations">Try Code</button>
+      <button class="pill" data-fill="discover-task" data-value="Write creative stories that blend genres, use literary devices, and maintain consistent narrative voice">Try Creative</button>
+      <button class="pill" data-fill="discover-task" data-value="Solve logical deduction puzzles that require tracking multiple constraints and relationships">Try Logic</button>
+    </div>
+  </div>
+
+  <!-- ===== TABS ===== -->
+  <div class="tabs-wrapper">
+    <nav class="tabs">
+      <button class="tab active" data-tab="discover">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2 6.3-6.4 2.1 2-6.3z"/></svg>
+        Discover
+      </button>
+      <button class="tab" data-tab="solve">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"/></svg>
+        Solve
+      </button>
+      <button class="tab" data-tab="compare">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Compare
+      </button>
+      <button class="tab" data-tab="structures">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-6l-2-2H5a2 2 0 0 0-2 2z"/></svg>
+        Structures
+      </button>
+    </nav>
+  </div>
+
+  <main class="main-content">
+
+    <!-- =========== DISCOVER TAB =========== -->
+    <section id="tab-discover" class="tab-panel active">
+      <div class="card">
+        <div class="card-header">
+          <h2>Build a Reasoning Structure</h2>
+          <span class="card-badge badge-blue">Stage 1</span>
+        </div>
+        <p class="hint">Describe a task category. The framework will select, adapt, and compose reasoning modules into a reusable structure.</p>
+        <button id="btn-discover" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Run Discovery
+        </button>
+      </div>
+
+      <div id="discover-results" class="results hidden">
+        <div class="card">
+          <div class="structure-id-bar">
+            <span class="id-label">Structure ID</span>
+            <code id="discover-structure-id"></code>
+            <button class="btn-copy" data-copy-target="discover-structure-id" title="Copy ID">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Selected Modules</h3>
+          <ul id="discover-selected-modules"></ul>
+        </div>
+
+        <div class="card">
+          <h3>Adapted Modules</h3>
+          <ul id="discover-adapted-modules"></ul>
+        </div>
+
+        <div class="card collapsible-card">
+          <h3 class="collapsible" data-target="discover-structure-json">
+            <span class="arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+            Reasoning Structure (JSON)
+            <button class="btn-copy btn-copy-inline" data-copy-block="discover-structure-json" title="Copy JSON">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy
+            </button>
+          </h3>
+          <pre id="discover-structure-json" class="collapsed"><code></code></pre>
+        </div>
+
+        <div class="card collapsible-card">
+          <h3 class="collapsible" data-target="discover-thinking">
+            <span class="arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+            Thinking Traces
+          </h3>
+          <div id="discover-thinking" class="collapsed thinking-traces"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== SOLVE TAB =========== -->
+    <section id="tab-solve" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <h2>Solve a Problem</h2>
+          <span class="card-badge badge-green">Stage 2</span>
+        </div>
+        <p class="hint">Pick a reasoning structure, then pose a specific problem.</p>
+
+        <div class="dropdown-row">
+          <select id="solve-structure-select">
+            <option value="">-- Select a structure --</option>
+          </select>
+          <button id="btn-refresh-solve" class="btn-icon" title="Refresh structures">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </button>
+        </div>
+
+        <div class="quick-fills" id="solve-quick-fills">
+          <button class="pill" data-fill="solve-problem" data-value="A store offers a 20% discount on a $150 jacket. Then applies an additional 15% member discount on the reduced price. Sales tax is 8.5%. What is the final price?">Math</button>
+          <button class="pill" data-fill="solve-problem" data-value="There are 5 houses in a row. Each is painted a different color: red, blue, green, yellow, white. Each owner has a different pet: dog, cat, bird, fish, hamster. The red house owner has a dog. The blue house is to the left of the green house. The cat owner lives next to the bird owner. The yellow house is on the far right. The fish owner lives in the center house. Who owns the hamster?">Logic</button>
+          <button class="pill" data-fill="solve-problem" data-value="Find the bug in this Python code:\ndef find_second_largest(nums):\n    largest = nums[0]\n    second = nums[1]\n    for n in nums[2:]:\n        if n > largest:\n            second = largest\n            largest = n\n        elif n > second:\n            second = n\n    return second">Code</button>
+          <button class="pill" data-fill="solve-problem" data-value="Marie Curie was born in Warsaw. Warsaw is the capital of Poland. Poland is in the European Union. The European Union was established by the Maastricht Treaty in 1993. How many years after the establishment of the EU was the country of Marie Curie's birth a member, given Poland joined in 2004?">Multi-hop QA</button>
+        </div>
+
+        <textarea id="solve-problem" rows="4" placeholder="Type your problem here..."></textarea>
+        <button id="btn-solve" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"/></svg>
+          Solve
+        </button>
+      </div>
+
+      <div id="solve-results" class="results hidden">
+        <div class="card">
+          <h3>Reasoning Trace</h3>
+          <div id="solve-reasoning" class="reasoning-block"></div>
+        </div>
+        <div class="card answer-card">
+          <h3>Answer</h3>
+          <div id="solve-answer" class="answer-block"></div>
+        </div>
+        <div class="card collapsible-card">
+          <h3 class="collapsible" data-target="solve-thinking">
+            <span class="arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+            Thinking Trace
+          </h3>
+          <div id="solve-thinking" class="collapsed thinking-traces"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== COMPARE TAB =========== -->
+    <section id="tab-compare" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <h2>Compare Approaches</h2>
+          <span class="card-badge badge-yellow">Side-by-Side</span>
+        </div>
+        <p class="hint">See how naive prompting stacks up against SELF-DISCOVER on the same problem.</p>
+
+        <div class="dropdown-row">
+          <select id="compare-structure-select">
+            <option value="">-- Select a structure --</option>
+          </select>
+          <button id="btn-refresh-compare" class="btn-icon" title="Refresh structures">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </button>
+        </div>
+
+        <div class="quick-fills" id="compare-quick-fills">
+          <button class="pill" data-fill="compare-problem" data-value="A store offers a 20% discount on a $150 jacket. Then applies an additional 15% member discount on the reduced price. Sales tax is 8.5%. What is the final price?">Math</button>
+          <button class="pill" data-fill="compare-problem" data-value="There are 5 houses in a row. Each is painted a different color: red, blue, green, yellow, white. Each owner has a different pet: dog, cat, bird, fish, hamster. The red house owner has a dog. The blue house is to the left of the green house. The cat owner lives next to the bird owner. The yellow house is on the far right. The fish owner lives in the center house. Who owns the hamster?">Logic</button>
+          <button class="pill" data-fill="compare-problem" data-value="Find the bug in this Python code:\ndef find_second_largest(nums):\n    largest = nums[0]\n    second = nums[1]\n    for n in nums[2:]:\n        if n > largest:\n            second = largest\n            largest = n\n        elif n > second:\n            second = n\n    return second">Code</button>
+          <button class="pill" data-fill="compare-problem" data-value="Marie Curie was born in Warsaw. Warsaw is the capital of Poland. Poland is in the European Union. The European Union was established by the Maastricht Treaty in 1993. How many years after the establishment of the EU was the country of Marie Curie's birth a member, given Poland joined in 2004?">Multi-hop QA</button>
+        </div>
+
+        <textarea id="compare-problem" rows="4" placeholder="Type your problem here..."></textarea>
+        <button id="btn-compare" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Compare
+        </button>
+      </div>
+
+      <div id="compare-results" class="results hidden">
+        <div class="compare-grid">
+          <div class="card compare-panel naive-panel">
+            <div class="panel-header">
+              <h3>Naive Prompting</h3>
+              <span class="badge badge-naive">Baseline</span>
+            </div>
+            <div class="reasoning-block" id="compare-naive-reasoning"></div>
+            <div class="answer-block" id="compare-naive-answer"></div>
+          </div>
+
+          <div class="card compare-panel sd-panel">
+            <div class="panel-header">
+              <h3>SELF-DISCOVER</h3>
+              <span class="badge badge-sd">Structured</span>
+            </div>
+            <div class="reasoning-block" id="compare-sd-reasoning"></div>
+            <div class="answer-block" id="compare-sd-answer"></div>
+          </div>
+        </div>
+
+        <div class="card collapsible-card">
+          <h3 class="collapsible" data-target="compare-thinking">
+            <span class="arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+            Thinking Traces
+          </h3>
+          <div id="compare-thinking" class="collapsed thinking-traces"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== STRUCTURES TAB =========== -->
+    <section id="tab-structures" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <h2>Saved Structures</h2>
+          <button id="btn-refresh-structures" class="btn-icon" title="Refresh structures">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </button>
+        </div>
+        <p class="hint">Browse all discovered reasoning structures. Click any structure to expand its details.</p>
+      </div>
+
+      <div id="structures-list" class="structures-list">
+        <div class="structures-empty">No structures found. Go to the Discover tab to create one.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="global-error" class="global-error hidden"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
