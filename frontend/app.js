@@ -32,15 +32,14 @@ $$(".pill[data-fill]").forEach((pill) => {
   });
 });
 
-// ---- Collapsible sections ----
-$$(".collapsible").forEach((header) => {
-  header.addEventListener("click", (e) => {
-    // Don't toggle when clicking the copy button inside the header
-    if (e.target.classList.contains("btn-copy")) return;
-    header.classList.toggle("open");
-    const target = $(`#${header.dataset.target}`);
-    target.classList.toggle("expanded");
-  });
+// ---- Collapsible sections (delegated so it works for dynamically-shown panels) ----
+document.addEventListener("click", (e) => {
+  const header = e.target.closest(".collapsible");
+  if (!header) return;
+  if (e.target.closest(".btn-copy")) return;
+  header.classList.toggle("open");
+  const target = $(`#${header.dataset.target}`);
+  if (target) target.classList.toggle("expanded");
 });
 
 // ---- Copy to clipboard ----
@@ -338,6 +337,23 @@ $("#btn-compare").addEventListener("click", async () => {
       data.self_discover?.answer || "No answer returned."
     );
 
+    // Cost cards
+    renderCostCards(data.token_usage);
+
+    // Scale projections
+    if (data.scale_projections && data.token_usage) {
+      window._compareData = data;
+      updateProjections(100);
+      const slider = $("#projection-slider");
+      slider.value = 100;
+      $("#projection-count").textContent = "100";
+      slider.oninput = () => {
+        const n = parseInt(slider.value);
+        $("#projection-count").textContent = n;
+        updateProjections(n);
+      };
+    }
+
     // Thinking traces
     const thinkEl = $("#compare-thinking");
     if (data.thinking_traces) {
@@ -490,3 +506,136 @@ const structuresObserver = new MutationObserver(() => {
   }
 });
 structuresObserver.observe($("#tab-structures"), { attributes: true, attributeFilter: ["class"] });
+
+// ============================================================
+// COST TRACKING
+// ============================================================
+
+function fmtCost(usd) {
+  if (usd == null) return "N/A";
+  if (usd < 0.01) return "$" + usd.toFixed(6);
+  return "$" + usd.toFixed(4);
+}
+
+function fmtTokens(n) {
+  if (n == null || n === 0) return "0";
+  if (n >= 1000) return (n / 1000).toFixed(1) + "k";
+  return String(n);
+}
+
+function renderCostCards(tokenUsage) {
+  const container = $("#compare-cost-cards");
+  if (!tokenUsage) {
+    container.innerHTML = "";
+    return;
+  }
+
+  const cards = [
+    {
+      label: "Naive (1 pass)",
+      accent: "var(--naive-accent)",
+      data: tokenUsage.naive,
+    },
+    {
+      label: "SD Inference Only",
+      accent: "var(--sd-accent)",
+      data: tokenUsage.sd_inference_only,
+    },
+    {
+      label: "SD Full (discovery + inference)",
+      accent: "var(--g-blue)",
+      data: tokenUsage.sd_full,
+    },
+  ];
+
+  container.innerHTML = cards
+    .map(
+      (c) => `
+    <div class="cost-card" style="border-top: 3px solid ${c.accent}">
+      <div class="cost-card-label">${c.label}</div>
+      <div class="cost-card-cost">${fmtCost(c.data?.cost_usd)}</div>
+      <div class="cost-card-tokens">
+        <span>In: ${fmtTokens(c.data?.input_tokens)}</span>
+        <span>Out: ${fmtTokens(c.data?.output_tokens)}</span>
+        <span>Think: ${fmtTokens(c.data?.thinking_tokens)}</span>
+      </div>
+    </div>`
+    )
+    .join("");
+}
+
+function updateProjections(n) {
+  const data = window._compareData;
+  if (!data || !data.token_usage) return;
+
+  const naive = data.token_usage.naive;
+  const sdInf = data.token_usage.sd_inference_only;
+  const sdFull = data.token_usage.sd_full;
+  const k = data.cot_sc_passes || 20;
+
+  const naiveCost = n * (naive?.cost_usd || 0);
+  const cotScCost = n * k * (naive?.cost_usd || 0);
+  const sdInfCost = n * (sdInf?.cost_usd || 0);
+  const sdFullCost =
+    sdFull?.discovery_cost_usd != null
+      ? sdFull.discovery_cost_usd + n * (sdInf?.cost_usd || 0)
+      : null;
+
+  const rows = [
+    { name: "Naive", calls: n, cost: naiveCost },
+    { name: `CoT-SC (${k} passes)`, calls: n * k, cost: cotScCost },
+    {
+      name: "SD Full",
+      calls: sdFullCost != null ? 3 + n : "N/A",
+      cost: sdFullCost,
+    },
+    { name: "SD Inference Only", calls: n, cost: sdInfCost },
+  ];
+
+  const tbody = $("#projection-table tbody");
+  tbody.innerHTML = rows
+    .map((r) => {
+      const savings =
+        r.cost != null && cotScCost > 0
+          ? ((1 - r.cost / cotScCost) * 100).toFixed(1) + "%"
+          : "N/A";
+      return `<tr>
+        <td>${r.name}</td>
+        <td>${typeof r.calls === "number" ? r.calls.toLocaleString() : r.calls}</td>
+        <td>${fmtCost(r.cost)}</td>
+        <td>${savings}</td>
+      </tr>`;
+    })
+    .join("");
+
+  const maxCost = Math.max(
+    naiveCost,
+    cotScCost,
+    sdFullCost || 0,
+    sdInfCost
+  );
+  const barData = [
+    { name: "Naive", cost: naiveCost, color: "var(--naive-accent)" },
+    { name: "CoT-SC", cost: cotScCost, color: "var(--error)" },
+    { name: "SD Full", cost: sdFullCost, color: "var(--g-blue)" },
+    { name: "SD Inf", cost: sdInfCost, color: "var(--sd-accent)" },
+  ];
+
+  const chart = $("#projection-bar-chart");
+  chart.innerHTML = barData
+    .map((b) => {
+      const pct =
+        b.cost != null && maxCost > 0
+          ? Math.max((b.cost / maxCost) * 100, 1)
+          : 0;
+      return `
+      <div class="bar-row">
+        <span class="bar-label">${b.name}</span>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${pct}%;background:${b.color}"></div>
+        </div>
+        <span class="bar-value">${fmtCost(b.cost)}</span>
+      </div>`;
+    })
+    .join("");
+}

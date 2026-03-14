@@ -32,6 +32,7 @@ async def run_inference(reasoning_structure: dict, problem: str) -> dict:
         "reasoning_trace": reasoning_trace,
         "answer": answer,
         "thinking_trace": result.get("thoughts"),
+        "usage": result.get("usage", {}),
     }
 
 
@@ -48,4 +49,5 @@ async def run_naive(problem: str) -> dict:
     return {
         "reasoning": reasoning,
         "answer": answer,
+        "usage": result.get("usage", {}),
     }

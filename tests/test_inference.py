@@ -85,6 +85,7 @@ async def test_run_inference_returns_structured_result():
     gemini_response = {
         "text": "Step 1: analyzed the problem.\n\n**Final Answer:** 42",
         "thoughts": "I thought about it deeply",
+        "usage": {"input_tokens": 100, "output_tokens": 50, "thinking_tokens": 20, "total_tokens": 170},
     }
 
     mock_gemini = AsyncMock()
@@ -96,6 +97,7 @@ async def test_run_inference_returns_structured_result():
     assert result["answer"] == "42"
     assert "analyzed the problem" in result["reasoning_trace"]
     assert result["thinking_trace"] == "I thought about it deeply"
+    assert result["usage"]["input_tokens"] == 100
 
     # Verify the prompt was formatted with the structure
     call_prompt = mock_gemini.generate.call_args[0][0]
@@ -112,6 +114,7 @@ async def test_run_inference_handles_no_thinking():
     mock_gemini.generate = AsyncMock(return_value={
         "text": "Done.\n\n**Final Answer:** result",
         "thoughts": None,
+        "usage": {"input_tokens": 50, "output_tokens": 30, "thinking_tokens": 0, "total_tokens": 80},
     })
 
     with patch("backend.app.inference.gemini", mock_gemini):
@@ -130,6 +133,7 @@ async def test_run_naive_returns_reasoning_and_answer():
     mock_gemini.generate = AsyncMock(return_value={
         "text": "I reasoned about it.\n\nFinal Answer: 100",
         "thoughts": None,
+        "usage": {"input_tokens": 80, "output_tokens": 40, "thinking_tokens": 0, "total_tokens": 120},
     })
 
     with patch("backend.app.inference.gemini", mock_gemini):
@@ -137,6 +141,7 @@ async def test_run_naive_returns_reasoning_and_answer():
 
     assert result["answer"] == "100"
     assert "I reasoned about it" in result["reasoning"]
+    assert result["usage"]["input_tokens"] == 80
 
     # Verify naive prompt was used
     call_prompt = mock_gemini.generate.call_args[0][0]
@@ -151,6 +156,7 @@ async def test_run_naive_no_marker():
     mock_gemini.generate = AsyncMock(return_value={
         "text": "The answer is probably 5 but I am not sure",
         "thoughts": None,
+        "usage": {"input_tokens": 60, "output_tokens": 30, "thinking_tokens": 0, "total_tokens": 90},
     })
 
     with patch("backend.app.inference.gemini", mock_gemini):

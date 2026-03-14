@@ -65,12 +65,13 @@ async def test_run_discovery_parses_json_from_code_block():
     structure = {"step_1": {"instruction": "do thing", "reasoning_module": "mod"}}
     json_in_code_block = f"```json\n{json.dumps(structure)}\n```"
 
+    _usage = {"input_tokens": 10, "output_tokens": 5, "thinking_tokens": 2, "total_tokens": 17}
     mock_gemini = AsyncMock()
     mock_gemini.generate = AsyncMock(
         side_effect=[
-            {"text": "Module A\nModule B", "thoughts": "thinking select"},
-            {"text": "Adapted A\nAdapted B", "thoughts": "thinking adapt"},
-            {"text": json_in_code_block, "thoughts": "thinking implement"},
+            {"text": "Module A\nModule B", "thoughts": "thinking select", "usage": _usage},
+            {"text": "Adapted A\nAdapted B", "thoughts": "thinking adapt", "usage": _usage},
+            {"text": json_in_code_block, "thoughts": "thinking implement", "usage": _usage},
         ]
     )
 
@@ -89,9 +90,9 @@ async def test_run_discovery_parses_raw_json():
     mock_gemini = AsyncMock()
     mock_gemini.generate = AsyncMock(
         side_effect=[
-            {"text": "Module X", "thoughts": None},
-            {"text": "Adapted X", "thoughts": None},
-            {"text": json.dumps(structure), "thoughts": None},
+            {"text": "Module X", "thoughts": None, "usage": {}},
+            {"text": "Adapted X", "thoughts": None, "usage": {}},
+            {"text": json.dumps(structure), "thoughts": None, "usage": {}},
         ]
     )
 
@@ -107,9 +108,9 @@ async def test_run_discovery_falls_back_on_invalid_json():
     mock_gemini = AsyncMock()
     mock_gemini.generate = AsyncMock(
         side_effect=[
-            {"text": "Module A", "thoughts": None},
-            {"text": "Adapted A", "thoughts": None},
-            {"text": "This is not valid JSON at all", "thoughts": None},
+            {"text": "Module A", "thoughts": None, "usage": {}},
+            {"text": "Adapted A", "thoughts": None, "usage": {}},
+            {"text": "This is not valid JSON at all", "thoughts": None, "usage": {}},
         ]
     )
 
@@ -126,12 +127,15 @@ async def test_run_discovery_calls_gemini_three_times_in_order():
     """Discovery must call gemini.generate exactly 3 times: SELECT, ADAPT, IMPLEMENT."""
     structure = {"step_1": {"instruction": "x", "reasoning_module": "y"}}
 
+    _u1 = {"input_tokens": 100, "output_tokens": 50, "thinking_tokens": 20, "total_tokens": 170}
+    _u2 = {"input_tokens": 80, "output_tokens": 40, "thinking_tokens": 10, "total_tokens": 130}
+    _u3 = {"input_tokens": 120, "output_tokens": 60, "thinking_tokens": 30, "total_tokens": 210}
     mock_gemini = AsyncMock()
     mock_gemini.generate = AsyncMock(
         side_effect=[
-            {"text": "Module A\nModule B", "thoughts": "t1"},
-            {"text": "Adapted A\nAdapted B", "thoughts": "t2"},
-            {"text": json.dumps(structure), "thoughts": "t3"},
+            {"text": "Module A\nModule B", "thoughts": "t1", "usage": _u1},
+            {"text": "Adapted A\nAdapted B", "thoughts": "t2", "usage": _u2},
+            {"text": json.dumps(structure), "thoughts": "t3", "usage": _u3},
         ]
     )
 
@@ -160,3 +164,13 @@ async def test_run_discovery_calls_gemini_three_times_in_order():
     # Verify modules are split into lists
     assert result["selected_modules"] == ["Module A", "Module B"]
     assert result["adapted_modules"] == ["Adapted A", "Adapted B"]
+
+    # Verify discovery_usage is aggregated
+    du = result["discovery_usage"]
+    assert du["select"] == _u1
+    assert du["adapt"] == _u2
+    assert du["implement"] == _u3
+    assert du["total"]["input_tokens"] == 300
+    assert du["total"]["output_tokens"] == 150
+    assert du["total"]["thinking_tokens"] == 60
+    assert du["total"]["total_tokens"] == 510

@@ -5,6 +5,7 @@ from .gemini_client import gemini
 from .reasoning_modules import get_modules_text
 from .prompts import SELECT_PROMPT, ADAPT_PROMPT, IMPLEMENT_PROMPT
 from .config import settings
+from .cost import sum_usage
 
 
 async def run_discovery(task_description: str) -> dict:
@@ -42,6 +43,18 @@ async def run_discovery(task_description: str) -> dict:
         else:
             reasoning_structure = {"raw": raw_structure}
 
+    step_usages = [
+        select_result.get("usage", {}),
+        adapt_result.get("usage", {}),
+        implement_result.get("usage", {}),
+    ]
+    discovery_usage = {
+        "select": select_result.get("usage", {}),
+        "adapt": adapt_result.get("usage", {}),
+        "implement": implement_result.get("usage", {}),
+        "total": sum_usage(step_usages),
+    }
+
     return {
         "task_description": task_description,
         "selected_modules": selected_modules.strip().split("\n"),
@@ -52,4 +65,5 @@ async def run_discovery(task_description: str) -> dict:
             "adapt": adapt_result.get("thoughts"),
             "implement": implement_result.get("thoughts"),
         },
+        "discovery_usage": discovery_usage,
     }

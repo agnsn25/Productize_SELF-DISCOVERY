@@ -231,6 +231,10 @@
       </div>
 
       <div id="compare-results" class="results hidden">
+
+        <!-- Cost summary cards -->
+        <div id="compare-cost-cards" class="cost-cards-grid"></div>
+
         <div class="compare-grid">
           <div class="card compare-panel naive-panel">
             <div class="panel-header">
@@ -248,6 +252,34 @@
             </div>
             <div class="reasoning-block" id="compare-sd-reasoning"></div>
             <div class="answer-block" id="compare-sd-answer"></div>
+          </div>
+        </div>
+
+        <!-- Scale projections (collapsible) -->
+        <div class="card collapsible-card">
+          <h3 class="collapsible" data-target="compare-projections">
+            <span class="arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+            Scale Projections
+          </h3>
+          <div id="compare-projections" class="collapsed">
+            <div class="projections-controls">
+              <label for="projection-slider">Problems to solve: <strong id="projection-count">100</strong></label>
+              <input type="range" id="projection-slider" min="1" max="1000" value="100" step="1">
+            </div>
+            <div id="projection-bar-chart" class="bar-chart"></div>
+            <table id="projection-table" class="projection-table">
+              <thead>
+                <tr>
+                  <th>Approach</th>
+                  <th>API Calls</th>
+                  <th>Est. Cost</th>
+                  <th>Savings vs CoT-SC</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
           </div>
         </div>
 

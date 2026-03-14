@@ -18,5 +18,10 @@ class Settings(BaseSettings):
     discovery_thinking_budget: int = 8192
     inference_thinking_budget: int = -1  # dynamic
 
+    # Pricing (Gemini 2.5 Pro, USD per 1M tokens)
+    price_per_1m_input_tokens: float = 1.25
+    price_per_1m_output_tokens: float = 10.0  # includes thinking tokens
+    cot_sc_passes: int = 20  # CoT-Self-Consistency pass count for projections
+
 
 settings = Settings()

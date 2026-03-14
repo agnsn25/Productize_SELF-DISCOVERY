@@ -59,9 +59,20 @@ class GeminiClient:
             else:
                 text_parts.append(part.text)
 
+        usage = {}
+        um = getattr(response, "usage_metadata", None)
+        if um is not None:
+            usage = {
+                "input_tokens": getattr(um, "prompt_token_count", 0) or 0,
+                "output_tokens": getattr(um, "candidates_token_count", 0) or 0,
+                "thinking_tokens": getattr(um, "thoughts_token_count", 0) or 0,
+                "total_tokens": getattr(um, "total_token_count", 0) or 0,
+            }
+
         return {
             "text": "\n".join(text_parts),
             "thoughts": "\n".join(thoughts) if thoughts else None,
+            "usage": usage,
         }
 
 

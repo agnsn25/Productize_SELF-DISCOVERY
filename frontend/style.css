@@ -871,6 +871,128 @@ pre {
   color: #fff;
 }
 
+/* ===== COST CARDS ===== */
+.cost-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+@media (max-width: 700px) {
+  .cost-cards-grid { grid-template-columns: 1fr; }
+}
+.cost-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 16px;
+  transition: box-shadow var(--transition);
+}
+.cost-card:hover { box-shadow: var(--shadow-sm); }
+.cost-card-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+}
+.cost-card-cost {
+  font-family: 'Roboto Mono', 'SF Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.cost-card-tokens {
+  display: flex;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: 'Roboto Mono', monospace;
+}
+
+/* ===== SCALE PROJECTIONS ===== */
+.projections-controls {
+  margin-bottom: 16px;
+  padding-top: 12px;
+}
+.projections-controls label {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 8px;
+}
+.projections-controls input[type="range"] {
+  width: 100%;
+  accent-color: var(--g-blue);
+}
+.projection-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-top: 12px;
+}
+.projection-table th {
+  text-align: left;
+  padding: 10px 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--border);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.projection-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.82rem;
+}
+.projection-table tr:last-child td { border-bottom: none; }
+
+/* ===== BAR CHART ===== */
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bar-label {
+  width: 72px;
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-align: right;
+}
+.bar-track {
+  flex: 1;
+  height: 20px;
+  background: var(--bg-input);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  min-width: 2px;
+}
+.bar-value {
+  width: 80px;
+  flex-shrink: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

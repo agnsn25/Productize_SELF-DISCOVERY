@@ -1,6 +1,23 @@
 from pydantic import BaseModel
 
 
+# ── Shared ───────────────────────────────────────────────
+
+class TokenUsage(BaseModel):
+    input_tokens: int = 0
+    output_tokens: int = 0
+    thinking_tokens: int = 0
+    total_tokens: int = 0
+
+
+class ScaleProjection(BaseModel):
+    n: int
+    naive_cost: float
+    cot_sc_cost: float
+    sd_full_cost: float | None
+    sd_inference_cost: float
+
+
 # ── Discover ──────────────────────────────────────────────
 
 class DiscoverRequest(BaseModel):
@@ -13,8 +30,9 @@ class DiscoverResponse(BaseModel):
     selected_modules: list[str]
     adapted_modules: list[str]
     reasoning_structure: dict
-    thinking_traces: dict  # keys: select, adapt, implement
+    thinking_traces: dict
     created_at: str
+    discovery_usage: dict | None = None
 
 
 # ── Infer ─────────────────────────────────────────────────
@@ -42,9 +60,12 @@ class CompareRequest(BaseModel):
 class CompareResponse(BaseModel):
     structure_id: str
     problem: str
-    naive: dict  # keys: reasoning, answer
-    self_discover: dict  # keys: reasoning_trace, answer
+    naive: dict
+    self_discover: dict
     thinking_traces: dict | None
+    token_usage: dict | None = None
+    scale_projections: list[ScaleProjection] | None = None
+    cot_sc_passes: int | None = None
 
 
 # ── Structures ────────────────────────────────────────────
@@ -63,3 +84,4 @@ class StructureDetail(BaseModel):
     reasoning_structure: dict
     thinking_traces: dict
     created_at: str
+    discovery_usage: dict | None = None
