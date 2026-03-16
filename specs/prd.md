@@ -84,7 +84,7 @@
 
 #### 4. Compare API: `POST /api/infer/compare`
 - **Input:** Problem instance + structure ID
-- **Process:** Run naive (direct prompt) and structured inference in parallel
+- **Process:** Run CoT and structured inference in parallel
 - **Output:** Side-by-side results showing accuracy and reasoning differences
 - **Purpose:** Proves the thesis visually
 
@@ -125,7 +125,7 @@ A web interface with 3 tabs:
 
 1. **Discover Tab:** Submit task descriptions, see the SELECT -> ADAPT -> IMPLEMENT pipeline in action, inspect generated reasoning structures
 2. **Solve Tab:** Pick a saved structure, submit a new problem instance, see the structured solution with reasoning trace
-3. **Compare Tab:** Submit a problem, see side-by-side naive vs structured results to prove the thesis
+3. **Compare Tab:** Submit a problem, see side-by-side CoT vs structured results to prove the thesis
 
 **Additional Portal Features:**
 - API documentation with JSON request/response examples

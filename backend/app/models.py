@@ -12,7 +12,7 @@ class TokenUsage(BaseModel):
 
 class ScaleProjection(BaseModel):
     n: int
-    naive_cost: float
+    cot_cost: float
     cot_sc_cost: float
     sd_full_cost: float | None
     sd_inference_cost: float
@@ -60,7 +60,7 @@ class CompareRequest(BaseModel):
 class CompareResponse(BaseModel):
     structure_id: str
     problem: str
-    naive: dict
+    cot: dict
     self_discover: dict
     thinking_traces: dict | None
     token_usage: dict | None = None

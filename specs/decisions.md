@@ -55,13 +55,13 @@ Records the "why" behind key technical and product decisions. Each entry capture
 
 ## D005: Compare Endpoint
 **Date:** 2026-03-11
-**Decision:** Build a dedicated `POST /api/infer/compare` endpoint that runs naive and structured inference side-by-side.
+**Decision:** Build a dedicated `POST /api/infer/compare` endpoint that runs CoT and structured inference side-by-side.
 
 **Alternatives considered:**
 - Let users manually run two separate calls and compare themselves
 - Only show structured results
 
-**Rationale:** The compare endpoint is the single most persuasive feature for proving the thesis. Seeing a naive answer next to a structured answer, with reasoning traces, makes the value proposition tangible and visual. It's the demo-closer. Worth the extra implementation effort.
+**Rationale:** The compare endpoint is the single most persuasive feature for proving the thesis. Seeing a CoT answer next to a structured answer, with reasoning traces, makes the value proposition tangible and visual. It's the demo-closer. Worth the extra implementation effort.
 
 ---
 
@@ -77,6 +77,18 @@ Records the "why" behind key technical and product decisions. Each entry capture
 
 ---
 
+## D007: Rename "Naive" Baseline to "CoT" (Chain-of-Thought)
+**Date:** 2026-03-15
+**Decision:** Rename all references from "naive" to "CoT" across the codebase — code, UI, tests, docs, and specs.
+
+**Alternatives considered:**
+- Keep "naive" label but add a tooltip explaining it's actually CoT
+- Add a truly naive (zero-shot, no reasoning) baseline as a third comparison
+
+**Rationale:** The baseline prompt says "solve step by step" and asks the model to show reasoning — that's textbook Chain-of-Thought prompting, not naive/direct prompting. Calling it "naive" was misleading and undersold the baseline, making SELF-DISCOVER look like it was beating a weaker opponent than it actually is. The original paper compares against CoT, so this rename aligns us with the paper's terminology and is more honest to users.
+
+---
+
 ## Critical Change Log
 
 *This section records codebase-wide changes, breaking changes, and major refactors.*
@@ -84,3 +96,4 @@ Records the "why" behind key technical and product decisions. Each entry capture
 | Date | Change | Rationale | Impact |
 |------|--------|-----------|--------|
 | 2026-03-11 | Project initialized with specs | Starting from PRD, establishing foundations before code | All future development follows these specs |
+| 2026-03-15 | Renamed "naive" → "CoT" across entire codebase | Baseline prompt was CoT, not naive — mislabeling was misleading | API response keys changed: `naive` → `cot`. CSS classes: `naive-*` → `cot-*`. Python: `NAIVE_PROMPT` → `COT_PROMPT`, `run_naive` → `run_cot`. Frontend element IDs updated. |

@@ -1,7 +1,7 @@
 import json
 
 from .gemini_client import gemini
-from .prompts import SOLVE_PROMPT, NAIVE_PROMPT
+from .prompts import SOLVE_PROMPT, COT_PROMPT
 from .config import settings
 
 ANSWER_MARKERS = ["**Final Answer:**", "Final Answer:", "ANSWER:", "**Answer:**"]
@@ -36,9 +36,9 @@ async def run_inference(reasoning_structure: dict, problem: str) -> dict:
     }
 
 
-async def run_naive(problem: str) -> dict:
-    """Solve a problem with a simple direct prompt (no structure)."""
-    prompt = NAIVE_PROMPT.format(problem=problem)
+async def run_cot(problem: str) -> dict:
+    """Solve a problem with Chain-of-Thought prompting (no structure)."""
+    prompt = COT_PROMPT.format(problem=problem)
     result = await gemini.generate(
         prompt,
         thinking_budget=settings.inference_thinking_budget,

@@ -86,7 +86,7 @@ Format your response as a JSON object with two keys:
 Return ONLY the JSON object, no extra commentary.
 """
 
-NAIVE_PROMPT = """\
+COT_PROMPT = """\
 Solve the following problem step by step:
 
 {problem}

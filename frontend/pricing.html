@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing — Self-Discover API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;500;700&family=Roboto:wght@300;400;500&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="/static/pricing.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-left">
+        <a href="/" class="brand">
+          <span class="brand-s">S</span>elf <span class="brand-dash">-</span> <span class="brand-d">D</span>iscover <span class="brand-api"><span class="brand-a">A</span>PI</span>
+        </a>
+        <span class="brand-subtitle">Pricing</span>
+      </div>
+      <div class="navbar-right">
+        <a href="/" class="nav-link">Overview</a>
+        <a href="/docs" class="nav-link">Documentation</a>
+        <a href="/pricing" class="nav-link active-link">Pricing</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="pricing-layout">
+    <main class="pricing-main">
+
+      <!-- HERO -->
+      <section class="pricing-hero">
+        <h1 class="pricing-title">Simple, transparent pricing</h1>
+        <p class="pricing-lead">Pay once to discover a reasoning structure. Reuse it forever at a fraction of the cost of ensemble methods.</p>
+      </section>
+
+      <!-- PRICING CARDS -->
+      <section class="pricing-tiers">
+        <div class="tier-card tier-discovery">
+          <div class="tier-badge" style="background: #e8f0fe; color: #4285f4;">DISCOVERY</div>
+          <div class="tier-price">$1.00 <span class="tier-per">/ structure</span></div>
+          <p class="tier-desc">One-time cost to generate a reusable reasoning structure for a problem type.</p>
+          <ul class="tier-features">
+            <li>3 LLM calls (SELECT, ADAPT, IMPLEMENT)</li>
+            <li>Full thinking traces included</li>
+            <li>Structure stored forever</li>
+            <li>Unlimited reuse across inference calls</li>
+          </ul>
+          <div class="tier-cogs">
+            <span class="tier-cogs-label">Our cost</span>
+            <span class="tier-cogs-value">~$0.28</span>
+            <span class="tier-cogs-margin">72% margin</span>
+          </div>
+        </div>
+
+        <div class="tier-card tier-inference">
+          <div class="tier-badge" style="background: #e6f4ea; color: #137333;">INFERENCE</div>
+          <div class="tier-price">$0.12 <span class="tier-per">/ query</span></div>
+          <p class="tier-desc">Per-query cost to solve a problem using a saved reasoning structure.</p>
+          <ul class="tier-features">
+            <li>1 LLM call per query</li>
+            <li>Full reasoning trace returned</li>
+            <li>70% cheaper than CoT-SC</li>
+            <li>Volume discounts available</li>
+          </ul>
+          <div class="tier-cogs">
+            <span class="tier-cogs-label">Our cost</span>
+            <span class="tier-cogs-value">~$0.04</span>
+            <span class="tier-cogs-margin">67% margin</span>
+          </div>
+        </div>
+
+        <div class="tier-card tier-competitor">
+          <div class="tier-badge" style="background: #fce8e6; color: #c5221f;">COT-SC ALTERNATIVE</div>
+          <div class="tier-price">$0.40 <span class="tier-per">/ query</span></div>
+          <p class="tier-desc">What you'd pay with CoT-Self-Consistency (20 passes) for comparable accuracy.</p>
+          <ul class="tier-features">
+            <li>20 LLM calls per query</li>
+            <li>No reusable structure</li>
+            <li>Same cost every single time</li>
+            <li class="feature-negative">No amortization possible</li>
+          </ul>
+          <div class="tier-cogs tier-cogs-competitor">
+            <span class="tier-cogs-label">All cost, no margin</span>
+          </div>
+        </div>
+      </section>
+
+      <hr class="pricing-divider" />
+
+      <!-- COST BASIS -->
+      <section class="pricing-section">
+        <h2>Cost basis: Gemini 2.5 Pro</h2>
+        <p class="pricing-body">All pricing is built on top of Gemini 2.5 Pro's token rates. Here's what we pay per API call.</p>
+
+        <table class="pricing-table">
+          <thead>
+            <tr>
+              <th>Token type</th>
+              <th>Rate (per 1M tokens)</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Input tokens</td>
+              <td class="mono">$1.25</td>
+              <td>Prompts under 200K context</td>
+            </tr>
+            <tr>
+              <td>Output tokens</td>
+              <td class="mono">$10.00</td>
+              <td>Includes thinking tokens</td>
+            </tr>
+            <tr>
+              <td>Input (>200K context)</td>
+              <td class="mono">$2.50</td>
+              <td>2x rate for long prompts</td>
+            </tr>
+            <tr>
+              <td>Output (>200K context)</td>
+              <td class="mono">$15.00</td>
+              <td>1.5x rate for long prompts</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr class="pricing-divider" />
+
+      <!-- UNIT ECONOMICS BREAKDOWN -->
+      <section class="pricing-section">
+        <h2>Unit economics breakdown</h2>
+        <p class="pricing-body">Discovery runs 3 calls with a fixed thinking budget. Inference runs 1 call with dynamic thinking.</p>
+
+        <div class="econ-grid">
+          <div class="econ-card">
+            <h3>Discovery (one-time)</h3>
+            <table class="econ-table">
+              <thead><tr><th>Step</th><th>Input</th><th>Output</th><th>Cost</th></tr></thead>
+              <tbody>
+                <tr><td>SELECT</td><td class="mono">~1,500</td><td class="mono">~800</td><td class="mono">$0.010</td></tr>
+                <tr><td>ADAPT</td><td class="mono">~1,200</td><td class="mono">~1,000</td><td class="mono">$0.012</td></tr>
+                <tr><td>IMPLEMENT</td><td class="mono">~1,500</td><td class="mono">~2,000</td><td class="mono">$0.022</td></tr>
+                <tr><td>Thinking (3x8192)</td><td class="mono">—</td><td class="mono">~24,000</td><td class="mono">$0.240</td></tr>
+                <tr class="econ-total"><td>Total</td><td class="mono">~4,200</td><td class="mono">~27,800</td><td class="mono">$0.284</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="econ-card">
+            <h3>Inference (per query)</h3>
+            <table class="econ-table">
+              <thead><tr><th>Step</th><th>Input</th><th>Output</th><th>Cost</th></tr></thead>
+              <tbody>
+                <tr><td>SOLVE</td><td class="mono">~1,500</td><td class="mono">~1,500</td><td class="mono">$0.017</td></tr>
+                <tr><td>Thinking (dynamic)</td><td class="mono">—</td><td class="mono">~2,000</td><td class="mono">$0.020</td></tr>
+                <tr class="econ-total"><td>Total</td><td class="mono">~1,500</td><td class="mono">~3,500</td><td class="mono">$0.037</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <hr class="pricing-divider" />
+
+      <!-- INTERACTIVE MARGIN CALCULATOR -->
+      <section class="pricing-section">
+        <h2>Margin calculator</h2>
+        <p class="pricing-body">Adjust your sell prices and query volume to see revenue, COGS, and gross margins in real time.</p>
+
+        <div class="calc-controls">
+          <div class="calc-control">
+            <label for="calc-discovery-price">Discovery sell price</label>
+            <div class="calc-input-row">
+              <span class="calc-dollar">$</span>
+              <input type="number" id="calc-discovery-price" value="1.00" min="0" step="0.10" />
+            </div>
+          </div>
+          <div class="calc-control">
+            <label for="calc-inference-price">Inference sell price</label>
+            <div class="calc-input-row">
+              <span class="calc-dollar">$</span>
+              <input type="number" id="calc-inference-price" value="0.12" min="0" step="0.01" />
+            </div>
+          </div>
+          <div class="calc-control">
+            <label for="calc-structures">Structures / month</label>
+            <input type="number" id="calc-structures" value="50" min="0" step="10" />
+          </div>
+          <div class="calc-control">
+            <label for="calc-queries">Queries / structure / month</label>
+            <input type="number" id="calc-queries" value="200" min="0" step="50" />
+          </div>
+          <div class="calc-control">
+            <label for="calc-cot-sc-passes">CoT-SC passes (competitor)</label>
+            <input type="number" id="calc-cot-sc-passes" value="20" min="1" step="1" />
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="calc-results">
+          <div class="calc-result-card">
+            <div class="calc-result-label">Monthly revenue</div>
+            <div class="calc-result-value" id="calc-revenue">$0</div>
+          </div>
+          <div class="calc-result-card">
+            <div class="calc-result-label">Monthly COGS</div>
+            <div class="calc-result-value calc-result-cogs" id="calc-cogs">$0</div>
+          </div>
+          <div class="calc-result-card">
+            <div class="calc-result-label">Gross profit</div>
+            <div class="calc-result-value calc-result-profit" id="calc-profit">$0</div>
+          </div>
+          <div class="calc-result-card">
+            <div class="calc-result-label">Gross margin</div>
+            <div class="calc-result-value calc-result-margin" id="calc-margin">0%</div>
+          </div>
+        </div>
+
+        <!-- Customer savings comparison -->
+        <div class="calc-comparison">
+          <h3>Customer savings vs CoT-Self-Consistency</h3>
+          <div class="calc-comparison-grid">
+            <div class="calc-comp-card">
+              <div class="calc-comp-label">Customer pays us</div>
+              <div class="calc-comp-value" id="calc-customer-cost">$0</div>
+              <div class="calc-comp-sub">/ month</div>
+            </div>
+            <div class="calc-comp-card calc-comp-vs">
+              <div class="calc-comp-label">CoT-SC would cost them</div>
+              <div class="calc-comp-value calc-comp-red" id="calc-cotsc-cost">$0</div>
+              <div class="calc-comp-sub">/ month</div>
+            </div>
+            <div class="calc-comp-card">
+              <div class="calc-comp-label">Customer saves</div>
+              <div class="calc-comp-value calc-comp-green" id="calc-savings">$0</div>
+              <div class="calc-comp-sub" id="calc-savings-pct">(0%)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scale chart -->
+        <div class="calc-scale">
+          <h3>Cost at scale (per structure)</h3>
+          <p class="pricing-body">How total cost per structure changes as query volume grows.</p>
+          <div class="scale-chart" id="scale-chart"></div>
+          <div class="scale-legend">
+            <span class="scale-legend-item"><span class="scale-dot" style="background: var(--error);"></span> CoT-SC (<span id="legend-passes">20</span> passes)</span>
+            <span class="scale-legend-item"><span class="scale-dot" style="background: var(--g-blue);"></span> SD (discovery + inference)</span>
+            <span class="scale-legend-item"><span class="scale-dot" style="background: var(--g-green);"></span> SD (inference only)</span>
+          </div>
+        </div>
+      </section>
+
+      <hr class="pricing-divider" />
+
+      <!-- VOLUME PLANS -->
+      <section class="pricing-section">
+        <h2>Volume plans</h2>
+        <p class="pricing-body">For teams running SELF-DISCOVER in production.</p>
+
+        <div class="plans-grid">
+          <div class="plan-card">
+            <div class="plan-name">Free</div>
+            <div class="plan-price">$0<span>/mo</span></div>
+            <ul class="plan-features">
+              <li>3 discoveries / month</li>
+              <li>50 queries / month</li>
+              <li>Community support</li>
+            </ul>
+          </div>
+          <div class="plan-card plan-featured">
+            <div class="plan-popular">Most Popular</div>
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">$49<span>/mo</span></div>
+            <ul class="plan-features">
+              <li>20 discoveries / month</li>
+              <li>2,000 queries / month</li>
+              <li>$0.10 / query overage</li>
+              <li>Priority support</li>
+            </ul>
+          </div>
+          <div class="plan-card">
+            <div class="plan-name">Scale</div>
+            <div class="plan-price">$199<span>/mo</span></div>
+            <ul class="plan-features">
+              <li>100 discoveries / month</li>
+              <li>15,000 queries / month</li>
+              <li>$0.08 / query overage</li>
+              <li>Dedicated support</li>
+            </ul>
+          </div>
+          <div class="plan-card">
+            <div class="plan-name">Enterprise</div>
+            <div class="plan-price">Custom</div>
+            <ul class="plan-features">
+              <li>Unlimited discoveries</li>
+              <li>Custom query volume</li>
+              <li>$0.05 / query</li>
+              <li>SLA &amp; dedicated CSM</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="pricing-footer">
+        <p>All prices in USD. Token costs based on Gemini 2.5 Pro API rates (prompts under 200K context).</p>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="/static/pricing.js"></script>
+</body>
+</html>

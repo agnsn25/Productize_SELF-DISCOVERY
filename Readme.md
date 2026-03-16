@@ -69,7 +69,7 @@ Open `http://localhost:8001` for the playground, or `http://localhost:8001/docs`
 |--------|----------|-------------|
 | `POST` | `/api/discover` | Run discovery pipeline for a task type |
 | `POST` | `/api/infer` | Solve a problem using a saved structure |
-| `POST` | `/api/infer/compare` | Compare naive vs SELF-DISCOVER side-by-side |
+| `POST` | `/api/infer/compare` | Compare CoT vs SELF-DISCOVER side-by-side |
 | `GET` | `/api/structures` | List all saved reasoning structures |
 | `GET` | `/api/structures/{id}` | Get full details of a structure |
 
@@ -96,7 +96,7 @@ curl -X POST http://localhost:8001/api/infer \
 │   ├── app/
 │   │   ├── main.py              # FastAPI app, routes, page serving
 │   │   ├── discovery.py         # SELECT → ADAPT → IMPLEMENT pipeline
-│   │   ├── inference.py         # SOLVE + naive comparison
+│   │   ├── inference.py         # SOLVE + CoT comparison
 │   │   ├── gemini_client.py     # Gemini 2.5 Pro client (lazy-init)
 │   │   ├── reasoning_modules.py # 39 cognitive reasoning modules
 │   │   ├── prompts.py           # All LLM prompt templates

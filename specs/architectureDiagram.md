@@ -15,7 +15,7 @@
 |   | Task input     |  | Structure pick |  | Structure pick   |   |
 |   | -> SELECT      |  | Problem input  |  | Problem input    |   |
 |   | -> ADAPT       |  | -> Solution    |  | -> Side-by-side  |   |
-|   | -> IMPLEMENT   |  |                |  |   naive vs       |   |
+|   | -> IMPLEMENT   |  |                |  |   CoT vs         |   |
 |   | -> Structure   |  |                |  |   structured     |   |
 |   +----------------+  +----------------+  +------------------+   |
 +------------------------------|------------------------------------+
@@ -30,7 +30,7 @@
 |  | GET  /api/structures   -> DB: list structures               |  |
 |  | GET  /api/structures/id-> DB: get structure                 |  |
 |  | POST /api/infer        -> Inference Executor                |  |
-|  | POST /api/infer/compare-> Parallel naive + structured       |  |
+|  | POST /api/infer/compare-> Parallel CoT + structured         |  |
 |  +------------------------------------------------------------+  |
 |                               |                                   |
 |  Services:                    |                                   |
@@ -144,8 +144,8 @@ Structure ID + Problem Instance
         |                            |
         v                            v
 +----------------+          +-----------------+
-| Naive Path     |          | Structured Path |
-| (direct prompt |          | (load structure |
+| CoT Path       |          | Structured Path |
+| (step-by-step  |          | (load structure |
 |  no structure) |          |  -> SOLVE)      |
 +----------------+          +-----------------+
         |                            |

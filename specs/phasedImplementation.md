@@ -36,7 +36,7 @@
 - [x] Write ADAPT prompt template (given task + selected modules, adapt to task)
 - [x] Write IMPLEMENT prompt template (given task + adapted modules, produce JSON structure)
 - [x] Write SOLVE prompt template (given problem + structure, solve step-by-step)
-- [x] Write NAIVE prompt template (direct prompt for baseline comparison)
+- [x] Write CoT prompt template (Chain-of-Thought baseline for comparison)
 
 ---
 
@@ -80,8 +80,8 @@
 
 ### Epic 3.3: Compare Endpoint
 - [x] `POST /api/infer/compare` -- accepts structure_id + problem instance
-- [x] Run naive (direct prompt, no structure) and structured inference in parallel
-- [x] Return side-by-side results (naive answer, structured answer, reasoning traces)
+- [x] Run CoT (no structure) and structured inference in parallel
+- [x] Return side-by-side results (CoT answer, structured answer, reasoning traces)
 
 ---
 
@@ -115,7 +115,7 @@
 ### Epic 4.4: Compare Tab
 - [x] Structure selector + problem instance input
 - [x] "Compare" button that calls `POST /api/infer/compare`
-- [x] Side-by-side display: naive answer vs SELF-DISCOVER answer
+- [x] Side-by-side display: CoT answer vs SELF-DISCOVER answer
 - [x] Visual badges (Baseline vs Structured)
 - [x] Thinking traces (collapsible)
 

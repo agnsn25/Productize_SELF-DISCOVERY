@@ -121,10 +121,10 @@ That's it. One API call. No re-discovery. No ensemble of 10-40 passes. Just one 
 
 The `/api/infer/compare` endpoint is the demo-closer. It runs the same problem through *both* approaches in parallel:
 
-1. **Naive path:** Direct prompt, no structure -- "solve this step by step"
+1. **CoT path:** Chain-of-Thought prompt, no structure -- "solve this step by step"
 2. **Structured path:** Load the discovered structure, follow the blueprint
 
-The results appear side-by-side in the Compare tab. You can see the naive answer meander and sometimes get lost, while the structured answer follows a clear, methodical path. This is what makes the thesis tangible -- not a chart in a paper, but a live demo you can try with your own problems.
+The results appear side-by-side in the Compare tab. You can see the CoT answer meander and sometimes get lost, while the structured answer follows a clear, methodical path. This is what makes the thesis tangible -- not a chart in a paper, but a live demo you can try with your own problems.
 
 ---
 
@@ -135,11 +135,11 @@ backend/app/
   config.py              <- Settings (API key, model, DB path, thinking budgets)
   gemini_client.py       <- Thin wrapper around google-genai SDK
   reasoning_modules.py   <- The 39 atomic modules (a Python list)
-  prompts.py             <- All prompt templates (SELECT, ADAPT, IMPLEMENT, SOLVE, NAIVE)
+  prompts.py             <- All prompt templates (SELECT, ADAPT, IMPLEMENT, SOLVE, COT)
   models.py              <- Pydantic schemas for API requests/responses
   database.py            <- SQLite CRUD (init, save, get, list)
   discovery.py           <- SELECT->ADAPT->IMPLEMENT orchestrator
-  inference.py           <- SOLVE executor + NAIVE executor + answer parsing
+  inference.py           <- SOLVE executor + CoT executor + answer parsing
   main.py                <- FastAPI app setup, CORS, static files, lifespan
   routes/
     discover.py          <- POST /api/discover endpoint
@@ -210,7 +210,7 @@ This project uses SQLite, plain HTML, and a single Python backend. No Kubernetes
 
 ### 2. Prove the Thesis Before Building Enterprise Features
 
-The compare endpoint exists before authentication, billing, or SDKs. Why? Because if the core thesis doesn't hold -- if structured reasoning isn't meaningfully better than naive prompting -- then none of the enterprise features matter. The compare feature is the "does this even work?" test. Always build the proof before the product.
+The compare endpoint exists before authentication, billing, or SDKs. Why? Because if the core thesis doesn't hold -- if structured reasoning isn't meaningfully better than Chain-of-Thought -- then none of the enterprise features matter. The compare feature is the "does this even work?" test. Always build the proof before the product.
 
 ### 3. Academic Insights Translate to Product Economics
 

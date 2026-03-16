@@ -321,12 +321,12 @@ $("#btn-compare").addEventListener("click", async () => {
       body: JSON.stringify({ structure_id: structureId, problem }),
     });
 
-    // Naive
-    $("#compare-naive-reasoning").innerHTML = renderMarkdown(
-      data.naive?.reasoning || "No reasoning returned."
+    // Chain-of-Thought
+    $("#compare-cot-reasoning").innerHTML = renderMarkdown(
+      data.cot?.reasoning || "No reasoning returned."
     );
-    $("#compare-naive-answer").innerHTML = renderMarkdown(
-      data.naive?.answer || "No answer returned."
+    $("#compare-cot-answer").innerHTML = renderMarkdown(
+      data.cot?.answer || "No answer returned."
     );
 
     // SELF-DISCOVER
@@ -532,9 +532,9 @@ function renderCostCards(tokenUsage) {
 
   const cards = [
     {
-      label: "Naive (1 pass)",
-      accent: "var(--naive-accent)",
-      data: tokenUsage.naive,
+      label: "CoT (1 pass)",
+      accent: "var(--cot-accent)",
+      data: tokenUsage.cot,
     },
     {
       label: "SD Inference Only",
@@ -568,13 +568,13 @@ function updateProjections(n) {
   const data = window._compareData;
   if (!data || !data.token_usage) return;
 
-  const naive = data.token_usage.naive;
+  const cot = data.token_usage.cot;
   const sdInf = data.token_usage.sd_inference_only;
   const sdFull = data.token_usage.sd_full;
   const k = data.cot_sc_passes || 20;
 
-  const naiveCost = n * (naive?.cost_usd || 0);
-  const cotScCost = n * k * (naive?.cost_usd || 0);
+  const cotCost = n * (cot?.cost_usd || 0);
+  const cotScCost = n * k * (cot?.cost_usd || 0);
   const sdInfCost = n * (sdInf?.cost_usd || 0);
   const sdFullCost =
     sdFull?.discovery_cost_usd != null
@@ -582,7 +582,7 @@ function updateProjections(n) {
       : null;
 
   const rows = [
-    { name: "Naive", calls: n, cost: naiveCost },
+    { name: "CoT", calls: n, cost: cotCost },
     { name: `CoT-SC (${k} passes)`, calls: n * k, cost: cotScCost },
     {
       name: "SD Full",
@@ -609,13 +609,13 @@ function updateProjections(n) {
     .join("");
 
   const maxCost = Math.max(
-    naiveCost,
+    cotCost,
     cotScCost,
     sdFullCost || 0,
     sdInfCost
   );
   const barData = [
-    { name: "Naive", cost: naiveCost, color: "var(--naive-accent)" },
+    { name: "CoT", cost: cotCost, color: "var(--cot-accent)" },
     { name: "CoT-SC", cost: cotScCost, color: "var(--error)" },
     { name: "SD Full", cost: sdFullCost, color: "var(--g-blue)" },
     { name: "SD Inf", cost: sdInfCost, color: "var(--sd-accent)" },

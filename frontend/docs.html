@@ -24,7 +24,7 @@
       <div class="navbar-right">
         <a href="/" class="nav-link">Overview</a>
         <a href="/docs" class="nav-link active-link">Documentation</a>
-        <a href="#" class="nav-link">Pricing</a>
+        <a href="/pricing" class="nav-link">Pricing</a>
       </div>
     </div>
   </nav>
@@ -337,7 +337,7 @@
             <span class="docs-method docs-method-post">POST</span>
             <code class="docs-path">/api/infer/compare</code>
           </div>
-          <p>Run both naive (direct prompt) and SELF-DISCOVER approaches on the same problem, side by side. Both run in parallel for speed.</p>
+          <p>Run both Chain-of-Thought and SELF-DISCOVER approaches on the same problem, side by side. Both run in parallel for speed.</p>
 
           <h4>Request Body</h4>
           <table class="docs-table">
@@ -366,7 +366,7 @@
 <pre><code>{
   "structure_id": "a1b2c3d4-...",
   "problem": "...",
-  "naive": {
+  "cot": {
     "reasoning": "Step-by-step reasoning without any structure...",
     "answer": "The final price is $109.65"
   },
@@ -375,7 +375,7 @@
     "answer": "The final price is $110.16"
   },
   "thinking_traces": {
-    "naive": null,
+    "cot": null,
     "self_discover": "..."
   }
 }</code></pre>
@@ -537,8 +537,8 @@
 
         <div class="docs-compare-explanation">
           <div class="docs-compare-col">
-            <div class="docs-compare-badge" style="background: #fef7e0; color: #e37400; border-color: rgba(251,188,4,0.3);">Naive</div>
-            <p>A straightforward "solve this step by step" prompt. No structure, no module selection. This is how most LLM apps work today.</p>
+            <div class="docs-compare-badge" style="background: #fef7e0; color: #e37400; border-color: rgba(251,188,4,0.3);">Chain-of-Thought</div>
+            <p>A "solve this step by step" prompt that elicits reasoning. No structure, no module selection. This is the standard CoT baseline used in the original paper.</p>
           </div>
           <div class="docs-compare-vs">vs</div>
           <div class="docs-compare-col">
@@ -551,7 +551,7 @@
         <ul class="docs-bullet-list">
           <li>Validating that a discovered structure actually improves answers for your problem type</li>
           <li>Demos and presentations showing the value of structured reasoning</li>
-          <li>Iterating on task descriptions — if SELF-DISCOVER isn't beating naive, your task description might be too vague</li>
+          <li>Iterating on task descriptions — if SELF-DISCOVER isn't beating CoT, your task description might be too vague</li>
         </ul>
       </section>
 

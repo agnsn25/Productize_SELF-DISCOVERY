@@ -1,12 +1,12 @@
-"""Tests for the inference flow (SOLVE and NAIVE)."""
+"""Tests for the inference flow (SOLVE and CoT)."""
 
 import json
 from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from backend.app.prompts import SOLVE_PROMPT, NAIVE_PROMPT
-from backend.app.inference import _split_answer, run_inference, run_naive
+from backend.app.prompts import SOLVE_PROMPT, COT_PROMPT
+from backend.app.inference import _split_answer, run_inference, run_cot
 
 
 # ── Prompt formatting ────────────────────────────────────────
@@ -23,9 +23,9 @@ def test_solve_prompt_formatting():
     assert "Follow the structure carefully" in result
 
 
-def test_naive_prompt_formatting():
-    """NAIVE_PROMPT should accept a problem placeholder."""
-    result = NAIVE_PROMPT.format(problem="Explain gravity")
+def test_cot_prompt_formatting():
+    """COT_PROMPT should accept a problem placeholder."""
+    result = COT_PROMPT.format(problem="Explain gravity")
     assert "Explain gravity" in result
     assert "Solve the following problem step by step" in result
 
@@ -124,11 +124,11 @@ async def test_run_inference_handles_no_thinking():
     assert result["answer"] == "result"
 
 
-# ── run_naive ────────────────────────────────────────────────
+# ── run_cot ──────────────────────────────────────────────────
 
 @pytest.mark.asyncio
-async def test_run_naive_returns_reasoning_and_answer():
-    """run_naive should call gemini with the naive prompt and split the answer."""
+async def test_run_cot_returns_reasoning_and_answer():
+    """run_cot should call gemini with the CoT prompt and split the answer."""
     mock_gemini = AsyncMock()
     mock_gemini.generate = AsyncMock(return_value={
         "text": "I reasoned about it.\n\nFinal Answer: 100",
@@ -137,20 +137,20 @@ async def test_run_naive_returns_reasoning_and_answer():
     })
 
     with patch("backend.app.inference.gemini", mock_gemini):
-        result = await run_naive("What is 10*10?")
+        result = await run_cot("What is 10*10?")
 
     assert result["answer"] == "100"
     assert "I reasoned about it" in result["reasoning"]
     assert result["usage"]["input_tokens"] == 80
 
-    # Verify naive prompt was used
+    # Verify CoT prompt was used
     call_prompt = mock_gemini.generate.call_args[0][0]
     assert "Solve the following problem step by step" in call_prompt
     assert "What is 10*10?" in call_prompt
 
 
 @pytest.mark.asyncio
-async def test_run_naive_no_marker():
+async def test_run_cot_no_marker():
     """When gemini returns text without an answer marker, full text is returned as both."""
     mock_gemini = AsyncMock()
     mock_gemini.generate = AsyncMock(return_value={
@@ -160,7 +160,7 @@ async def test_run_naive_no_marker():
     })
 
     with patch("backend.app.inference.gemini", mock_gemini):
-        result = await run_naive("What is 2+3?")
+        result = await run_cot("What is 2+3?")
 
     # With no marker, both reasoning and answer are the full text
     assert result["reasoning"] == result["answer"]

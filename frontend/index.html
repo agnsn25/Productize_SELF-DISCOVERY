@@ -23,7 +23,7 @@
       <div class="navbar-right">
         <a href="/" class="nav-link active-link">Overview</a>
         <a href="/docs" class="nav-link">Documentation</a>
-        <a href="#" class="nav-link">Pricing</a>
+        <a href="/pricing" class="nav-link">Pricing</a>
       </div>
     </div>
   </nav>
@@ -205,7 +205,7 @@
           <h2>Compare Approaches</h2>
           <span class="card-badge badge-yellow">Side-by-Side</span>
         </div>
-        <p class="hint">See how naive prompting stacks up against SELF-DISCOVER on the same problem.</p>
+        <p class="hint">See how Chain-of-Thought prompting stacks up against SELF-DISCOVER on the same problem.</p>
 
         <div class="dropdown-row">
           <select id="compare-structure-select">
@@ -236,13 +236,13 @@
         <div id="compare-cost-cards" class="cost-cards-grid"></div>
 
         <div class="compare-grid">
-          <div class="card compare-panel naive-panel">
+          <div class="card compare-panel cot-panel">
             <div class="panel-header">
-              <h3>Naive Prompting</h3>
-              <span class="badge badge-naive">Baseline</span>
+              <h3>Chain-of-Thought</h3>
+              <span class="badge badge-cot">Baseline</span>
             </div>
-            <div class="reasoning-block" id="compare-naive-reasoning"></div>
-            <div class="answer-block" id="compare-naive-answer"></div>
+            <div class="reasoning-block" id="compare-cot-reasoning"></div>
+            <div class="answer-block" id="compare-cot-answer"></div>
           </div>
 
           <div class="card compare-panel sd-panel">

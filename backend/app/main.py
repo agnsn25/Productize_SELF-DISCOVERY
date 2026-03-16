@@ -48,6 +48,11 @@ async def serve_docs():
     return FileResponse(FRONTEND_DIR / "docs.html")
 
 
+@app.get("/pricing", include_in_schema=False)
+async def serve_pricing():
+    return FileResponse(FRONTEND_DIR / "pricing.html")
+
+
 @app.get("/api/docs", include_in_schema=False)
 async def custom_swagger_ui():
     custom_page = f"""\

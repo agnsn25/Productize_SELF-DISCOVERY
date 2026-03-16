@@ -29,7 +29,7 @@ Deferred features from planning conversations. These are out of scope for MVP bu
 
 ## Enterprise Metrics Dashboard
 - Usage analytics: discoveries per day, inferences per structure, most popular structures
-- Accuracy tracking: compare structured vs naive results over time
+- Accuracy tracking: compare structured vs CoT results over time
 - Cost savings calculator: show users how much compute they're saving
 - Structure health monitoring: detect structures that produce poor results
 
